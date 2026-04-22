@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@300;400;500;600;700&family=Orbitron:wght@400;700;900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Rajdhani', ui-sans-serif, system-ui, sans-serif;
+  --font-bebas: 'Bebas Neue', sans-serif;
+  --font-orbitron: 'Orbitron', monospace;
+  
+  --color-gold: #FFD700;
+  --color-gold-dim: #B8960C;
+  --color-gold-light: #FFF0A0;
+  --color-neon-red: #FF2244;
+  --color-bg-dark: #0a0a0a;
+  --color-dark-surface: #111111;
+  --color-dark-surface-2: #1a1a1a;
+}
+
+body {
+  @apply bg-bg-dark text-[#E0E0E0] font-sans antialiased selection:bg-gold selection:text-black;
+}
+
+.bebas { font-family: var(--font-bebas); }
+.orbitron { font-family: var(--font-orbitron); }
+
+.cyber-clip {
+  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+}
+
+.cyber-clip-sm {
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+}
+
+.cyber-border {
+  @apply border border-gold/20 hover:border-gold/50 transition-all duration-300 bg-dark-surface-2;
+}
+
+.hero-gradient {
+  background: 
+    radial-gradient(ellipse 80% 60% at 50% 40%, rgba(255,215,0,0.06) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 80% 80%, rgba(255,34,68,0.08) 0%, transparent 60%);
+}
+
+.grid-lines {
+  background-image: 
+    repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(255,215,0,0.02) 40px, rgba(255,215,0,0.02) 41px),
+    repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(255,215,0,0.02) 40px, rgba(255,215,0,0.02) 41px);
+}
+
+.gold-text-stroke {
+  -webkit-text-stroke: 1px var(--color-gold);
+}
+
+.pulse-gold {
+  animation: pulse-gold 3s infinite;
+}
+
+@keyframes pulse-gold {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,215,0,0); }
+  50% { box-shadow: 0 0 20px 4px rgba(255,215,0,0.2); }
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-black;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gold;
+}

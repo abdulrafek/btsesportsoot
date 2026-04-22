@@ -1,0 +1,111 @@
+{
+  "entities": {
+    "Tournament": {
+      "title": "Tournament",
+      "description": "eSports tournament details",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "game": { "type": "string", "enum": ["BGMI", "Free Fire", "COD"] },
+        "status": { "type": "string", "enum": ["upcoming", "ongoing", "completed"] },
+        "type": { "type": "string", "enum": ["Solo", "Duo", "Squad"] },
+        "fee": { "type": "string" },
+        "prizePool": { "type": "string" },
+        "startDate": { "type": "string", "format": "date-time" },
+        "description": { "type": "string" },
+        "imageUrl": { "type": "string" }
+      },
+      "required": ["title", "game", "status", "type", "fee", "prizePool", "startDate"]
+    },
+    "Registration": {
+      "title": "Registration",
+      "description": "Tournament registration record",
+      "type": "object",
+      "properties": {
+        "tournamentId": { "type": "string" },
+        "teamName": { "type": "string" },
+        "captainName": { "type": "string" },
+        "captainDiscord": { "type": "string" },
+        "captainEmail": { "type": "string" },
+        "phoneNumber": { "type": "string" },
+        "players": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "game": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["tournamentId", "teamName", "captainName", "captainDiscord", "captainEmail"]
+    },
+    "Scrim": {
+      "title": "Scrim",
+      "description": "Daily scrim details",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "game": { "type": "string", "enum": ["BGMI", "Free Fire", "COD"] },
+        "time": { "type": "string" },
+        "slotsTotal": { "type": "number" },
+        "slotsFilled": { "type": "number" },
+        "fee": { "type": "string" },
+        "status": { "type": "string", "enum": ["open", "closed"] }
+      },
+      "required": ["title", "game", "time", "slotsTotal", "fee", "status"]
+    },
+    "LeaderboardEntry": {
+      "title": "Leaderboard Entry",
+      "description": "Team rankings performance",
+      "type": "object",
+      "properties": {
+        "teamName": { "type": "string" },
+        "game": { "type": "string" },
+        "matchesPlayed": { "type": "number" },
+        "points": { "type": "number" },
+        "wins": { "type": "number" }
+      },
+      "required": ["teamName", "game", "points"]
+    },
+    "PlayerProfile": {
+      "title": "Player Profile",
+      "description": "Detailed player personnel file",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "displayName": { "type": "string" },
+        "username": { "type": "string" },
+        "bio": { "type": "string" },
+        "avatarUrl": { "type": "string" },
+        "coverUrl": { "type": "string" },
+        "role": { "type": "string" },
+        "game": { "type": "string" },
+        "stats": { "type": "object" },
+        "socials": { "type": "object" },
+        "achievements": { "type": "array" },
+        "tournamentHistory": { "type": "array" }
+      },
+      "required": ["uid", "displayName", "username"]
+    }
+  },
+  "firestore": {
+    "tournaments": {
+      "schema": "Tournament",
+      "description": "Collection of available tournaments"
+    },
+    "registrations": {
+      "schema": "Registration",
+      "description": "Collection of tournament registrations"
+    },
+    "scrims": {
+      "schema": "Scrim",
+      "description": "Collection of scrim sessions"
+    },
+    "leaderboards": {
+      "schema": "LeaderboardEntry",
+      "description": "Global and game-specific leaderboards"
+    },
+    "profiles": {
+      "schema": "PlayerProfile",
+      "description": "User player profiles"
+    }
+  }
+}

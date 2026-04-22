@@ -1,0 +1,55 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper Functions
+    function isSignedIn() { return request.auth != null; }
+    function isOwner(uid) { return isSignedIn() && request.auth.uid == uid; }
+    function isAdmin() { return isSignedIn() && request.auth.token.email == 'editingvideo123456@gmail.com'; }
+    function isValidId(id) { return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); }
+
+    // Validation Helpers
+    function isValidProfile(data) {
+      return data.keys().hasAll(['uid', 'displayName', 'username']) &&
+             data.uid is string &&
+             data.displayName is string && data.displayName.size() <= 50 &&
+             data.username is string && data.username.size() <= 30 &&
+             (!('bio' in data) || (data.bio is string && data.bio.size() <= 500)) &&
+             (!('role' in data) || (data.role is string)) &&
+             (!('game' in data) || (data.game is string));
+    }
+
+    // Collection Rules
+    match /tournaments/{tournamentId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /registrations/{regId} {
+      allow read: if isAdmin();
+      allow create: if isSignedIn();
+    }
+
+    match /scrims/{scrimId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /leaderboards/{entry} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /profiles/{userId} {
+      allow read: if true;
+      allow create: if isOwner(userId) && isValidProfile(request.resource.data);
+      allow update: if isOwner(userId) && isValidProfile(request.resource.data) &&
+                    request.resource.data.uid == resource.data.uid;
+      allow delete: if isAdmin();
+    }
+  }
+}
